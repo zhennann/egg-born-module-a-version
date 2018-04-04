@@ -1,6 +1,6 @@
 const path = require('path');
 const config = require('./config.js');
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 exports.assetsPath = function(_path) {
   return path.join(config.build.assetsSubDirectory, _path);
@@ -32,9 +32,13 @@ exports.cssLoaders = function(options) {
     // Extract CSS when that option is specified
     // (which is the case during production build)
     if (options.extract) {
-      return [ MiniCssExtractPlugin.loader ].concat(loaders);
+      return ExtractTextPlugin.extract({
+        use: loaders,
+        fallback: 'vue-style-loader',
+      });
     }
     return [ 'vue-style-loader' ].concat(loaders);
+
   }
 
   // http://vuejs.github.io/vue-loader/en/configurations/extract-css.html
